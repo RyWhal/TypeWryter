@@ -1,5 +1,8 @@
 # TypeWryter
-TypeWryter is a terminal application designed for distraction free writing. It doesn't allow any fancy editing. You can write and you can backspace, thats it, preventing the urge to go back and edit. Files save once and minute and on escape. 
+TypeWryter is a terminal application designed for distraction free writing. It doesn't allow any fancy editing. You can write and you can backspace, thats it; preventing the urge to go back and edit. Files save on every carriage return.
+
+This code is a heavily modified version of [zerowriter](https://github.com/zerowriter/zerowriter1/tree/main) since they had a very good head start on developing this sort of project. Their project is awesome, but is a little different and will have a somewhat different featureset.  
+
  
 ## Getting Started
 1. Set up Raspberry Pi with Waveshare 4.1in epaper display - [More info available on Waveshare's Website](https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_(B)_Manual#Overview)
