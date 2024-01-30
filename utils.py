@@ -52,9 +52,10 @@ def get_random_name():
     animal = animals[random.randint(0, 171)]
     adjective = adjectives[random.randint(0, 199)]
     today = date.today().isoformat()
+    short_name = adjective + "_" + animal
     filename_string = today + "_" + adjective + "_" + animal 
     print(filename_string)
-    return filename_string
+    return filename_string,short_name
 
 
 def ensure_freewrites_directory():

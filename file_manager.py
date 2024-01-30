@@ -3,7 +3,6 @@ import curses
 from datetime import datetime
 import re
 from local_file_browser import start_server, stop_server
-from utils import display_web_window
 
 class FileManager:
     def __init__(self, directory):

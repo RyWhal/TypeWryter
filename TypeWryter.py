@@ -107,7 +107,9 @@ class TypeWryter:
         ]
         #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
         #self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{self.timestamp}.txt')
-        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{get_random_name()}.txt')
+        self.fname,self.short_name = get_random_name()
+        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{self.fname}.txt')
+        
         self.manual = self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'TypeWryter_Manual.txt')
         self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'cache.txt')
     
@@ -291,15 +293,15 @@ class TypeWryter:
 
     def new_file(self):
         #save the cache first
-        timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
-        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{get_random_name()}.txt')
+        self.fname,self.short_name = get_random_name()
+        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{self.fname}.txt')
         self.save_previous_lines(self.filename, self.previous_lines)
         
         #create a blank doc
         self.previous_lines.clear()
         self.input_content = ""
 
-        self.console_message = f"[New]"
+        self.console_message = f"[New] - {self.short_name}"
         self.update_display()
         time.sleep(1)
         self.console_message = ""
@@ -507,10 +509,10 @@ class TypeWryter:
         if e.name== "s" and self.control_active:
             self.save_previous_lines(self.filename, self.previous_lines)
             
-            self.console_message = f"[Saved]"
+            self.console_message = f"[Saved] - {self.short_name}"
             self.update_display()
             time.sleep(2)
-            self.console_message = f"{self.filename} Saved"
+            self.console_message = ""
             self.update_display()
         
         if e.name == "m" and self.control_active: #ctrl+m
