@@ -27,6 +27,9 @@ sudo apt install python3-gpiozero
 8. Clone this repo. `git clone https://github.com/RyWhal/TypeWryter.git`
 9. Run it from the TypeWrytes directory with: `sudo python main.py`
 
+Optional:
+1. Install the Pi-Sugar tools, including battery monitor: `curl http://cdn.pisugar.com/release/pisugar-power-manager.sh | sudo bash`
+
 # OS
 I used Raspberry Pi OS (64-bit) Lite.
 You can use whatever you want, but you may have to tweak minor things. 
