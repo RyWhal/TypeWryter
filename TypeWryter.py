@@ -21,7 +21,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import subprocess
 from local_file_browser import start_server, stop_server
-from utils import get_local_ip_address
+from utils import get_local_ip_address, get_random_name
 
 
 class Menu:
@@ -105,8 +105,9 @@ class TypeWryter:
     "                                     ",
     " CTRL + M -> Show Menu"
         ]
-        self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
-        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{self.timestamp}.txt')
+        #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
+        #self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{self.timestamp}.txt')
+        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{get_random_name()}.txt')
         self.manual = self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'TypeWryter_Manual.txt')
         self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'cache.txt')
     
@@ -290,7 +291,7 @@ class TypeWryter:
     def new_file(self):
         #save the cache first
         timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
-        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{timestamp}.txt')
+        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{get_random_name()}.txt')
         self.save_previous_lines(self.filename, self.previous_lines)
         
         #create a blank doc
