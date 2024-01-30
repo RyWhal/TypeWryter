@@ -125,7 +125,7 @@ class TypeWryter:
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
 
-        self.splash_screen()
+        self.splash_screen(e)
 
         self.keyboard.on_press(self.handle_key_down, suppress=False) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_press, suppress=True)
