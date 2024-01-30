@@ -131,7 +131,7 @@ class TypeWryter:
         self.keyboard.on_release(self.handle_key_press, suppress=True)
         self.keyboard.on_release(self.splash_screen, suppress=True)
       
-        self.splash_screen()
+        #self.splash_screen()
 
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
         self.menu.addItem("New", lambda: self.new_file())
