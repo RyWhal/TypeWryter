@@ -456,7 +456,7 @@ class TypeWryter:
 
         #Display Console Message
         if self.console_message != "":
-            self.display_draw.rectangle((240, 280, 400, 300), fill=255)
+            self.display_draw.rectangle((200, 280, 400, 300), fill=255)
             self.display_draw.text((280, 280), self.console_message, font=self.font13, fill=0)
             self.console_message = ""
         
