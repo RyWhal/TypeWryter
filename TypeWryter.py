@@ -125,11 +125,14 @@ class TypeWryter:
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
 
-        self.splash_screen(e)
+        
 
         self.keyboard.on_press(self.handle_key_down, suppress=False) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_press, suppress=True)
+        self.keyboard.on_release(self.splash_screen, suppress=True)
       
+        self.splash_screen()
+
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
         self.menu.addItem("New", lambda: self.new_file())
         self.menu.addItem("Load", lambda: self.show_load_menu())
