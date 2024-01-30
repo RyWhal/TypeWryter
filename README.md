@@ -22,10 +22,11 @@ sudo pip3 install RPi.GPIO
 sudo pip3 install spidev
 sudo apt install python3-gpiozero
 ```
-6. Install QRcode package: `sudo pip3 install qrcode`
-7. Install Flask: `pip install Flask`
-8. Clone this repo. `git clone https://github.com/RyWhal/TypeWryter.git`
-9. Run it from the TypeWrytes directory with: `sudo python main.py`
+6. Install QRcode: `sudo pip3 install qrcode`
+7. Install Flask: `pip3 install Flask`
+8. Install Keyboard: `sudo pip3 install keyboard`
+9. Clone this repo. `git clone https://github.com/RyWhal/TypeWryter.git`
+10. Run it from the TypeWrytes directory with: `sudo python main.py`
 
 Optional:
 1. Install the Pi-Sugar tools, including battery monitor: `curl http://cdn.pisugar.com/release/pisugar-power-manager.sh | sudo bash`
