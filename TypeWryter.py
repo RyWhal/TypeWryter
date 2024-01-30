@@ -125,14 +125,11 @@ class TypeWryter:
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
 
-        
+        self.splash_screen()
 
         self.keyboard.on_press(self.handle_key_down, suppress=False) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_press, suppress=True)
-        self.keyboard.on_release(self.splash_screen, suppress=True)
-      
-        #self.splash_screen()
-
+    
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
         self.menu.addItem("New", lambda: self.new_file())
         self.menu.addItem("Load", lambda: self.show_load_menu())
@@ -161,7 +158,7 @@ class TypeWryter:
         partial_buffer = self.epd.getbuffer(self.display_image)
         self.epd.display(partial_buffer)
 
-    def splash_screen(self,e):
+    def splash_screen(self):
         # Starting Y position
         y_position = 10 
         # Add each line of the ASCII art to the image
@@ -171,8 +168,6 @@ class TypeWryter:
 
         # Update the display with the new image
         self.full_update_buffer()
-        while e.name =="":
-            time.sleep(.1)
 
     def show_load_menu(self):
         print("showing load menu")
