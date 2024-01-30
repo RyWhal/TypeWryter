@@ -52,7 +52,7 @@ def get_random_name():
     animal = animals[random.randint(0, 171)]
     adjective = adjectives[random.randint(0, 199)]
     today = date.today().isoformat()
-    filename_string = today + "_" + animal + "_" + adjective 
+    filename_string = today + "_" + adjective + "_" + animal 
     print(filename_string)
     return filename_string
 
