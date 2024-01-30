@@ -233,7 +233,7 @@ class TypeWryter:
                 self.previous_lines = [line.strip() for line in lines]
                 self.input_content = ""
                 self.cursor_position = 0
-                self.console_message = f"[Loaded {self.filename}]"
+                self.console_message = f"[Loaded {self.short_name}]"
                 self.update_display()
                 time.sleep(1)
                 self.console_message = ""
@@ -457,7 +457,7 @@ class TypeWryter:
         #Display Console Message
         if self.console_message != "":
             self.display_draw.rectangle((200, 280, 400, 300), fill=255)
-            self.display_draw.text((280, 280), self.console_message, font=self.font13, fill=0)
+            self.display_draw.text((200, 280), self.console_message, font=self.font13, fill=0)
             self.console_message = ""
         
         #generate display buffer for display
