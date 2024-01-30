@@ -132,6 +132,7 @@ class TypeWryter:
         self.menu.addItem("Power Off", self.power_down)
         self.menu.addItem("Back", self.hide_menu)
 
+
         self.load_menu = Menu(self.display_draw, self.epd, self.display_image)
         self.populate_load_menu()
 
@@ -448,12 +449,12 @@ class TypeWryter:
         # print(temp)# to debug if you change the font parameters (size, chars per line, etc)
 
         for line in reversed(temp[-self.lines_on_screen:]):
-          self.display_draw.text((10, y_position), line[:self.chars_per_line], font=self.font13, fill=0)
+          self.display_draw.text((2, y_position), line[:self.chars_per_line], font=self.font13, fill=0)
           y_position -= self.line_spacing
 
         #Display Console Message
         if self.console_message != "":
-            self.display_draw.rectangle((280, 280, 400, 300), fill=255)
+            self.display_draw.rectangle((240, 280, 400, 300), fill=255)
             self.display_draw.text((280, 280), self.console_message, font=self.font13, fill=0)
             self.console_message = ""
         
@@ -509,7 +510,7 @@ class TypeWryter:
             self.console_message = f"[Saved]"
             self.update_display()
             time.sleep(2)
-            self.console_message = ""
+            self.console_message = f"{self.filename} Saved"
             self.update_display()
         
         if e.name == "m" and self.control_active: #ctrl+m

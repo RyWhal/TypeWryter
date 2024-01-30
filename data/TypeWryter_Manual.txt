@@ -3,5 +3,6 @@ Welcome to TypeWryter!
 [CTRL+M]   - Show Menu with more functions
 [CTRL+S]   - Save current tpying session
 [CTRL+N]   - Start a new typing session
+[CTRL+R]   - Refresh the display (clear artifacting)
 [CTRL+W]   - Show word count of current session
 [CTRL+esc] - Reboot the device
