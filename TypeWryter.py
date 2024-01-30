@@ -89,21 +89,26 @@ class TypeWryter:
         self.font13 = ImageFont.truetype('Courier Prime.ttf', 13)
         self.typewrytes_dir = ""
         self.ascii_art_lines = [
-    "+-----------------------------------+",
-    "| _____                             |",
-    "||_   _|   _ _ __   ___             |",
-    "|  | || | | | '_ \\ / _ \\            |",
-    "|  | || |_| | |_) |  __/            |",
-    "|  |_| \\__, | .__/ \\___|            |",
-    "|__    |___/|_|        _            |",
-    "|\\ \\      / / __ _   _| |_ ___ _ __ |",
-    "| \\ \\ /\\ / / '__| | | | __/ _ \\ '__||",
-    "|  \\ V  V /| |  | |_| | ||  __/ |   |",
-    "|   \\_/\\_/ |_|   \\__, |\\__\\___|_|   |",
-    "|                |___/              |",
-    "+-----------------------------------+",
-    "                                     ",
-    " CTRL + M -> Show Menu"
+        "+-----------------------------------+",
+        "| _____                             |",
+        "||_   _|   _ _ __   ___             |",
+        "|  | || | | | '_ \\ / _ \\            |",
+        "|  | || |_| | |_) |  __/            |",
+        "|  |_| \\__, | .__/ \\___|            |",
+        "|__    |___/|_|        _            |",
+        "|\\ \\      / / __ _   _| |_ ___ _ __ |",
+        "| \\ \\ /\\ / / '__| | | | __/ _ \\ '__||",
+        "|  \\ V  V /| |  | |_| | ||  __/ |   |",
+        "|   \\_/\\_/ |_|   \\__, |\\__\\___|_|   |",
+        "|                |___/              |",
+        "+-----------------------------------+",
+        "                                     ",
+        "[CTRL+M]   - Show Menu with more functions",
+        "[CTRL+S]   - Save current tpying session",
+        "[CTRL+N]   - Start a new typing session",
+        "[CTRL+R]   - Refresh the display (clear artifacting)",
+        "[CTRL+W]   - Show word count of current session",
+        "[CTRL+esc] - Reboot the device"
         ]
         #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
         #self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{self.timestamp}.txt')
@@ -153,9 +158,9 @@ class TypeWryter:
         partial_buffer = self.epd.getbuffer(self.display_image)
         self.epd.display(partial_buffer)
 
-    def splash_screen(self):
+    def splash_screen(self,e):
         # Starting Y position
-        y_position = 65 
+        y_position = 10 
         # Add each line of the ASCII art to the image
         for line in self.ascii_art_lines:
             self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
@@ -163,7 +168,8 @@ class TypeWryter:
 
         # Update the display with the new image
         self.full_update_buffer()
-        time.sleep(2)
+        while e.name =="":
+            time.sleep(.1)
 
     def show_load_menu(self):
         print("showing load menu")
@@ -456,8 +462,8 @@ class TypeWryter:
 
         #Display Console Message
         if self.console_message != "":
-            self.display_draw.rectangle((200, 280, 400, 300), fill=255)
-            self.display_draw.text((200, 280), self.console_message, font=self.font13, fill=0)
+            self.display_draw.rectangle((180, 280, 400, 300), fill=255)
+            self.display_draw.text((180, 280), self.console_message, font=self.font13, fill=0)
             self.console_message = ""
         
         #generate display buffer for display
