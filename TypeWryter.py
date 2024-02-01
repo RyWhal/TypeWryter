@@ -645,25 +645,21 @@ class TypeWryter:
             self.cursor_position = len(self.input_content)
             self.needs_input_update = True
 
+            # Check if adding the character exceeds the line length limit
             if len(self.input_content) > self.chars_per_line:
-                # Find the last space character before the line length limit
-                last_space = self.input_content.rfind(' ', 0, self.chars_per_line)
-                
-                if last_space != -1:
-                    sentence = self.input_content[:last_space]
-                    # Append the sentence to the previous lines
-                    self.previous_lines.append(sentence)                
-                    # Update input_content to contain the remaining characters
-                    self.input_content = self.input_content[last_space + 1:]
-                else:
-                    # Handle case when there is no space to split the line
-                    sentence = self.input_content[:self.chars_per_line]
-                    self.previous_lines.append(sentence)
-                    self.input_content = self.input_content[self.chars_per_line:]
+                # Cut off the part of the input_content that exceeds chars_per_line
+                sentence = self.input_content[:self.chars_per_line]
+                self.previous_lines.append(sentence)
+
+                # Update input_content to start with the next line
+                self.input_content = self.input_content[self.chars_per_line:]
+                self.cursor_position = len(self.input_content)
+
+                self.needs_display_update = True
 
                 
         # Update cursor_position to the length of the remaining input_content
-        self.cursor_position = len(self.input_content)                
+        #self.cursor_position = len(self.input_content)                
 
         self.typing_last_time = time.time()
         self.needs_input_update = True
