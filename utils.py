@@ -97,13 +97,3 @@ def get_local_ip_address():
         local_ip = s.getsockname()[0] # Get the local IP address
     return local_ip
 
-
-def get_word_count(self, file_path):
-    try:
-        with open(file_path, 'r') as file: # open the current file
-            self.content = file.read() #read in contents
-            self.words = self.content.split() # split it into single words
-            return len(self.words) # return length.
-    except IOError as e:
-        self.console_message = f"[Error getting wordcount]"
-        print("Failed to WC:", e)
