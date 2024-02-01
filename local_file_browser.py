@@ -12,7 +12,7 @@ app.debug = False # Change to 'True' if you need more information
 flask_pass = "{:04d}".format(random.randint(0, 9999)) #generate 4 digit random password
 app.secret_key = flask_pass  # Change to a random secret key
 
-freewrites_dir = os.path.join(os.getcwd(), "TypeWrytes")
+typewrytes_dir = os.path.join(os.getcwd(), "TypeWrytes")
 server_thread = None
 
 def require_password(view_function):
@@ -42,7 +42,7 @@ def login():
 @app.route('/')
 @require_password
 def index():
-    files = os.listdir(freewrites_dir)
+    files = os.listdir(typewrytes_dir)
     return render_template_string("""
         <ul>
             {% for file in files %}
@@ -54,7 +54,35 @@ def index():
 @app.route('/files/<filename>')
 @require_password
 def download_file(filename):
-    return send_from_directory(freewrites_dir, filename)
+    return send_from_directory(typewrytes_dir, filename)
+
+@app.route('/rename', methods=['POST'])
+@require_password
+def rename_file():
+    old_name = request.form['old_name']
+    new_name = request.form['new_name']
+    try:
+        os.rename(os.path.join(typewrytes_dir, old_name), os.path.join(typewrytes_dir, new_name))
+        return 'File renamed successfully'
+    except FileNotFoundError:
+        return 'File not found', 404
+
+@app.route('/download/<filename>')
+@require_password
+def download_file(filename):
+    try:
+        return send_from_directory(typewrytes_dir, filename, as_attachment=True)
+    except FileNotFoundError:
+        return 'File not found', 404
+
+@app.route('/delete/<filename>')
+@require_password
+def delete_file(filename):
+    try:
+        os.remove(os.path.join(typewrytes_dir, filename))
+        return 'File deleted successfully'
+    except FileNotFoundError:
+        return 'File not found', 404
 
 def run_server():
     try:
