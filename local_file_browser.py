@@ -51,10 +51,10 @@ def index():
         </ul>
     """, files=files)
 
-@app.route('/files/<filename>')
+'''@app.route('/files/<filename>')
 @require_password
 def download_file(filename):
-    return send_from_directory(typewrytes_dir, filename)
+    return send_from_directory(typewrytes_dir, filename)'''
 
 @app.route('/rename', methods=['POST'])
 @require_password
