@@ -704,14 +704,15 @@ class TypeWryter:
             self.needs_diplay_update=False
             self.typing_last_time = time.time()
 
-        # If the user hasn't typed in over 30 seconds do a full clear and refresh of the screen.
-        if (time.time()-self.typing_last_time) > (30):
+            # pulling this out for the time being because this actually breaks the file server. 
+            '''# If the user hasn't typed in over 30 seconds do a full clear and refresh of the screen.
+            if (time.time()-self.typing_last_time) > (30):
             self.epd.init()
             self.epd.Clear()
             self.update_display()
             self.update_input_area()
             self.needs_diplay_update=False
-            keyboard.read_key()
+            keyboard.read_key()'''
             
         elif (time.time()-self.typing_last_time)<(.75): #if not doing a full refresh, do partials
             print("updating display partial")
