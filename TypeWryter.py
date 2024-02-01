@@ -110,6 +110,7 @@ class TypeWryter:
         "[CTRL+R]   - Refresh the display",
         "[CTRL+W]   - Show current word count",
         "[CTRL+esc] - Reboot the device",
+        "                                ",
         " ** Press any key to continue** "
         ]
         #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
@@ -132,6 +133,7 @@ class TypeWryter:
         self.keyboard.on_press(self.handle_key_down, suppress=False) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_press, suppress=True)
     
+        # Populate the main menu items
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
         self.menu.addItem("New", lambda: self.new_file())
         self.menu.addItem("Load", lambda: self.show_load_menu())
@@ -141,10 +143,11 @@ class TypeWryter:
         self.menu.addItem("Power Off", self.power_down)
         self.menu.addItem("Back", self.hide_menu)
 
-
+        # populate the 'load' menu
         self.load_menu = Menu(self.display_draw, self.epd, self.display_image)
         self.populate_load_menu()
 
+        # Populate the network browser menu
         self.server_menu = Menu(self.display_draw, self.epd, self.display_image)
         self.server_menu.addItem("Start Server", lambda: self.start_file_server())
         self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
@@ -382,6 +385,7 @@ class TypeWryter:
             self.content = file.read()
             self.words = self.content.split()
             return len(self.words)
+            
 
     def start_file_server(self):
 
@@ -526,7 +530,7 @@ class TypeWryter:
             self.show_menu()
 
         if e.name == "w" and self.control_active: #ctrl+w
-            wc = self.get_word_count(self.cache_file_path)
+            wc = self.get_word_count(self.filename)
             print("Word Count: " + str(wc))
             self.console_message = "WC: " + str(wc)
             self.update_display()

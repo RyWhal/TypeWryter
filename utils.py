@@ -26,7 +26,8 @@ def get_random_name():
         "calm", "anxious", "content", "dissatisfied", "eager", "reluctant", "excited", "apathetic", "fearful", "bold",
         "grateful", "ungrateful", "hopeful", "pessimistic", "innocent", "guilty", "joyful", "mournful", "keen", "indifferent",
         "lively", "lethargic", "motivated", "unmotivated", "optimistic", "cynical", "passionate", "dispassionate", "quiet", "boisterous",
-        "rational", "irrational", "sensible", "foolish", "thoughtful", "thoughtless", "understanding", "unreasonable", "vibrant", "dull"
+        "rational", "irrational", "sensible", "foolish", "thoughtful", "thoughtless", "understanding", "unreasonable", "vibrant", "dull",
+        "spunky"
     ]
 
     animals = [
