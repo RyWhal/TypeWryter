@@ -635,33 +635,65 @@ class TypeWryter:
         if e.name == 'shift': #if shift is released
             self.shift_active = False
 
-        if len(e.name) == 1 and self.control_active == False:  # letter and number input
+        if len(e.name) == 1 and not self.control_active:  # letter and number input
             if self.shift_active:
-                char = keymaps.shift_mapping.get(e.name)
+                char = keymaps.shift_mapping.get(e.name, e.name)  # Default to e.name if no mapping
                 self.input_content += char
             else:
                 self.input_content += e.name
 
-            self.cursor_position += 1
+            self.cursor_position = len(self.input_content)
             self.needs_input_update = True
 
             # Check if adding the character exceeds the line length limit
-            if self.cursor_position > self.chars_per_line:
+            if len(self.input_content) > self.chars_per_line:
                 # Find the last space character before the line length limit
                 last_space = self.input_content.rfind(' ', 0, self.chars_per_line)
-                sentence = self.input_content[:last_space]
-                # Append the sentence to the previous lines
-                self.previous_lines.append(sentence)                
-
-                # Update input_content to contain the remaining characters
-                self.input_content = self.input_content[last_space + 1:]
-                self.needs_display_update=True
                 
-            # Update cursor_position to the length of the remaining input_content
-            self.cursor_position = len(self.input_content)                
+                if last_space != -1:
+                    sentence = self.input_content[:last_space]
+                    # Append the sentence to the previous lines
+                    self.previous_lines.append(sentence)                
+                    # Update input_content to contain the remaining characters
+                    self.input_content = self.input_content[last_space + 1:]
+                else:
+                    # Handle case when there is no space to split the line
+                    sentence = self.input_content[:self.chars_per_line]
+                    self.previous_lines.append(sentence)
+                    self.input_content = self.input_content[self.chars_per_line:]
 
-        self.typing_last_time = time.time()
-        self.needs_input_update = True
+                self.needs_display_update = True
+                self.cursor_position = len(self.input_content)
+                self.typing_last_time = time.time()
+                self.needs_input_update = True
+                
+
+            '''if len(e.name) == 1 and self.control_active == False:  # letter and number input
+                if self.shift_active:
+                    char = keymaps.shift_mapping.get(e.name)
+                    self.input_content += char
+                else:
+                    self.input_content += e.name
+
+                self.cursor_position += 1
+                self.needs_input_update = True
+
+                # Check if adding the character exceeds the line length limit
+                if self.cursor_position > self.chars_per_line:
+                    # Find the last space character before the line length limit
+                    last_space = self.input_content.rfind(' ', 0, self.chars_per_line)
+                    sentence = self.input_content[:last_space]
+                    # Append the sentence to the previous lines
+                    self.previous_lines.append(sentence)                
+
+                    # Update input_content to contain the remaining characters
+                    self.input_content = self.input_content[last_space + 1:]
+                    self.needs_display_update=True
+                    
+                # Update cursor_position to the length of the remaining input_content
+                self.cursor_position = len(self.input_content)             
+                    self.typing_last_time = time.time()
+                    self.needs_input_update = True'''
 
     def handle_interrupt(self):
       self.keyboard.unhook_all()
