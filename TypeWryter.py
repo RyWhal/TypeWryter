@@ -664,7 +664,7 @@ class TypeWryter:
                     self.input_content = self.input_content[self.chars_per_line:]
                     self.needs_display_update=True
 
-                #self.needs_display_update = True
+                self.needs_display_update = True
                 self.cursor_position = len(self.input_content)
                 self.typing_last_time = time.time()
                 self.needs_input_update = True
