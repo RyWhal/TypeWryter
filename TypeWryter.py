@@ -22,6 +22,7 @@ import os
 import subprocess
 from local_file_browser import start_server, stop_server
 from utils import get_local_ip_address, get_random_name
+import keyboard
 
 
 class Menu:
@@ -106,8 +107,8 @@ class TypeWryter:
         "[CTRL+M]   - Show Menu with more functions",
         "[CTRL+S]   - Save current tpying session",
         "[CTRL+N]   - Start a new typing session",
-        "[CTRL+R]   - Refresh the display (clear artifacting)",
-        "[CTRL+W]   - Show word count of current session",
+        "[CTRL+R]   - Refresh the display",
+        "[CTRL+W]   - Show current word count",
         "[CTRL+esc] - Reboot the device"
         ]
         #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
@@ -168,6 +169,7 @@ class TypeWryter:
 
         # Update the display with the new image
         self.full_update_buffer()
+        keyboard.read_key()
 
     def show_load_menu(self):
         print("showing load menu")
