@@ -1,7 +1,5 @@
 import time
 import keyboard
-#import keymaps
-#from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd import epd4in2_V2
 
 from TypeWryter import TypeWryter

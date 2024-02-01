@@ -109,7 +109,8 @@ class TypeWryter:
         "[CTRL+N]   - Start a new typing session",
         "[CTRL+R]   - Refresh the display",
         "[CTRL+W]   - Show current word count",
-        "[CTRL+esc] - Reboot the device"
+        "[CTRL+esc] - Reboot the device",
+        " ** Press any key to continue** "
         ]
         #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
         #self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{self.timestamp}.txt')
@@ -161,7 +162,7 @@ class TypeWryter:
 
     def splash_screen(self):
         # Starting Y position
-        y_position = 10 
+        y_position = 2 
         # Add each line of the ASCII art to the image
         for line in self.ascii_art_lines:
             self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
