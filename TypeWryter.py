@@ -704,7 +704,7 @@ class TypeWryter:
             self.needs_diplay_update=False
             self.typing_last_time = time.time()
 
-            # pulling this out for the time being because this actually breaks the file server. 
+            # pulling this out for the time being because this actually breaks the file server when the refresh happens
             '''# If the user hasn't typed in over 30 seconds do a full clear and refresh of the screen.
             if (time.time()-self.typing_last_time) > (30):
             self.epd.init()
