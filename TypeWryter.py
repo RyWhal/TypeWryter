@@ -176,7 +176,7 @@ class TypeWryter:
         for line in self.help_lines:
             self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
             y_position += 13
-            
+
         # Update the display with the new image
         self.full_update_buffer()
         keyboard.read_key()
@@ -709,7 +709,7 @@ class TypeWryter:
             self.epd.Clear()
             self.update_display()
             self.update_input_area()
-            keyboard.
+            keyboard.read_key()
             
         elif (time.time()-self.typing_last_time)<(.75): #if not doing a full refresh, do partials
             print("updating display partial")
