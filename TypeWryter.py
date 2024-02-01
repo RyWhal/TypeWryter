@@ -656,13 +656,15 @@ class TypeWryter:
                     self.previous_lines.append(sentence)                
                     # Update input_content to contain the remaining characters
                     self.input_content = self.input_content[last_space + 1:]
+                    self.needs_display_update=True
                 else:
                     # Handle case when there is no space to split the line
                     sentence = self.input_content[:self.chars_per_line]
                     self.previous_lines.append(sentence)
                     self.input_content = self.input_content[self.chars_per_line:]
+                    self.needs_display_update=True
 
-                self.needs_display_update = True
+                #self.needs_display_update = True
                 self.cursor_position = len(self.input_content)
                 self.typing_last_time = time.time()
                 self.needs_input_update = True
