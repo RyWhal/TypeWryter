@@ -103,6 +103,8 @@ class TypeWryter:
         "|   \\_/\\_/ |_|   \\__, |\\__\\___|_|   |",
         "|                |___/              |",
         "+-----------------------------------+",
+        ]
+        self.help_lines = [
         "                                     ",
         "[CTRL+M]   - Show Menu with more functions",
         "[CTRL+S]   - Save current tpying session",
@@ -171,6 +173,10 @@ class TypeWryter:
             self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
             y_position += 13  # Adjust line spacing as needed
 
+        for line in self.help_lines:
+            self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
+            y_position += 13
+            
         # Update the display with the new image
         self.full_update_buffer()
         keyboard.read_key()
@@ -507,13 +513,6 @@ class TypeWryter:
         
         self.needs_input_update = True
 
-    '''def delete_character(self):
-        if self.cursor_position > 0:
-            # Remove the character at the cursor position
-            self.input_content = self.input_content[:self.cursor_position - 1] + self.input_content[self.cursor_position:]
-            self.cursor_position -= 1  # Move the cursor back
-            self.needs_input_update = True'''
-
     def delete_character(self):
         if self.cursor_position > 0:
             # Normal backspace functionality
@@ -597,6 +596,8 @@ class TypeWryter:
             #self.power_down()
             pass
         if e.name == "r" and self.control_active: #ctrl+r
+            self.epd.init()
+            self.epd.Clear()
             self.update_display()
         if e.name == "q" and self.control_active: #ctrl+r
             self.display_qr_code()
@@ -702,8 +703,15 @@ class TypeWryter:
             self.update_input_area()
             self.needs_diplay_update=False
             self.typing_last_time = time.time()
+
+        if (time.time()-self.typing_last_time) > (30):
+            self.epd.init()
+            self.epd.Clear()
+            self.update_display()
+            self.update_input_area()
+            keyboard.
             
-        elif (time.time()-self.typing_last_time)<(.5): #if not doing a full refresh, do partials
+        elif (time.time()-self.typing_last_time)<(.75): #if not doing a full refresh, do partials
             print("updating display partial")
             #the screen enters a high refresh mode when there has been keyboard input
             if not self.updating_input_area and self.scrollindex==1:
