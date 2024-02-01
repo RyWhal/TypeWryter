@@ -507,12 +507,25 @@ class TypeWryter:
         
         self.needs_input_update = True
 
-    def delete_character(self):
+    '''def delete_character(self):
         if self.cursor_position > 0:
             # Remove the character at the cursor position
             self.input_content = self.input_content[:self.cursor_position - 1] + self.input_content[self.cursor_position:]
             self.cursor_position -= 1  # Move the cursor back
+            self.needs_input_update = True'''
+
+    def delete_character(self):
+        if self.cursor_position > 0:
+            # Normal backspace functionality
+            self.input_content = self.input_content[:self.cursor_position - 1] + self.input_content[self.cursor_position:]
+            self.cursor_position -= 1
             self.needs_input_update = True
+        elif self.previous_lines:
+            # Pull the last line from previous_lines if cursor is at the start of the input content
+            last_line = self.previous_lines.pop()
+            self.input_content = last_line + self.input_content
+            self.cursor_position = len(last_line)  # Position cursor at the end of the pulled line
+            self.needs_display_update = True
 
     def handle_key_down(self, e):
         if e.name == 'shift': #if shift is released
@@ -537,7 +550,7 @@ class TypeWryter:
             wc = self.get_word_count(self.filename)
             print(self.filename)
             print("Word Count: " + str(wc))
-            self.console_message = "WC: " + str(wc)
+            self.console_message = "Word count: " + str(wc)
             self.update_display()
             time.sleep(2)
             self.console_message = ""
