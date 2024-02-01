@@ -38,9 +38,9 @@ def get_random_name():
         "crocodile", "crow", "deer", "dinosaur", "dog", "dolphin", "dove", "dragonfly", "duck", "eagle",
         "echidna", "eel", "elephant", "elk", "emu", "falcon", "ferret", "finch", "fish", "flamingo",
         "fly", "fox", "frog", "gazelle", "gerbil", "giraffe", "gnat", "gnu", "goat", "goose",
-        "goldfish", "gorilla", "grasshopper", "grouse", "guinea pig", "gull", "hamster", "hare", "hawk", "hedgehog",
+        "goldfish", "gorilla", "grasshopper", "grouse", "guineapig", "gull", "hamster", "hare", "hawk", "hedgehog",
         "heron", "herring", "hippopotamus", "hornet", "horse", "hummingbird", "hyena", "ibex", "iguana", "jackal",
-        "jaguar", "jay", "jellyfish", "kangaroo", "koala", "komodo dragon", "kookaburra", "lemur", "leopard", "lion",
+        "jaguar", "jay", "jellyfish", "kangaroo", "koala", "komododragon", "kookaburra", "lemur", "leopard", "lion",
         "llama", "lobster", "locust", "loris", "louse", "lyrebird", "magpie", "mallard", "manatee", "mandrill",
         "marmoset", "marten", "meerkat", "mink", "mole", "mongoose", "monkey", "moose", "mosquito", "mouse",
         "mule", "narwhal", "newt", "nightingale", "octopus", "okapi", "opossum", "oryx", "ostrich", "otter",
@@ -97,3 +97,13 @@ def get_local_ip_address():
         local_ip = s.getsockname()[0] # Get the local IP address
     return local_ip
 
+
+def get_word_count(self, file_path):
+    try:
+        with open(file_path, 'r') as file: # open the current file
+            self.content = file.read() #read in contents
+            self.words = self.content.split() # split it into single words
+            return len(self.words) # return length.
+    except IOError as e:
+        self.console_message = f"[Error getting wordcount]"
+        print("Failed to WC:", e)

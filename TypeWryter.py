@@ -21,7 +21,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import subprocess
 from local_file_browser import start_server, stop_server
-from utils import get_local_ip_address, get_random_name
+from utils import get_local_ip_address, get_random_name, get_word_count
 import keyboard
 
 
@@ -379,17 +379,6 @@ class TypeWryter:
       except IOError as e:
           self.console_message = f"[Error saving file]"
           print("Failed to save file:", e)
-
-    def get_word_count(self, file_path):
-        try:
-            with open(file_path, 'r') as file:
-                self.content = file.read()
-                self.words = self.content.split()
-                print(str(len(self.words)))
-                return len(self.words)
-        except IOError as e:
-            self.console_message = f"[Error getting wordcount]"
-            print("Failed to WC:", e)
             
 
     def start_file_server(self):
@@ -535,7 +524,7 @@ class TypeWryter:
             self.show_menu()
 
         if e.name == "w" and self.control_active: #ctrl+w
-            wc = self.get_word_count(self.filename)
+            wc = get_word_count(self.filename)
             print(self.filename)
             print("Word Count: " + str(wc))
             self.console_message = "WC: " + str(wc)
