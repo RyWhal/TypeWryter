@@ -381,10 +381,15 @@ class TypeWryter:
           print("Failed to save file:", e)
 
     def get_word_count(self, file_path):
-        with open(file_path, 'r') as file:
-            self.content = file.read()
-            self.words = self.content.split()
-            return len(self.words)
+        try:
+            with open(file_path, 'r') as file:
+                self.content = file.read()
+                self.words = self.content.split()
+                print(str(len(self.words)))
+                return len(self.words)
+        except IOError as e:
+            self.console_message = f"[Error getting wordcount]"
+            print("Failed to WC:", e)
             
 
     def start_file_server(self):
@@ -531,6 +536,7 @@ class TypeWryter:
 
         if e.name == "w" and self.control_active: #ctrl+w
             wc = self.get_word_count(self.filename)
+            print(self.filename)
             print("Word Count: " + str(wc))
             self.console_message = "WC: " + str(wc)
             self.update_display()
