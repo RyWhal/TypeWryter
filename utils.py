@@ -4,6 +4,7 @@ import requests
 import subprocess
 import socket
 import random
+import re
 
 def get_random_name():
     adjectives = [
@@ -97,3 +98,11 @@ def get_local_ip_address():
         local_ip = s.getsockname()[0] # Get the local IP address
     return local_ip
 
+def clean_empty_files():
+    dir = os.path.join(os.path.dirname(__file__), 'TypeWrytes')
+    files = [f for f in os.listdir(dir) if f.endswith('.txt')]
+    # for all files check if size is zero and delete if so
+    for filename in files:
+        filepath = os.path.join(dir, filename)
+        if os.path.getsize(filepath) == 0:
+            os.remove(filepath)

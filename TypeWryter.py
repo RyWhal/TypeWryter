@@ -21,7 +21,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import subprocess
 from local_file_browser import start_server, stop_server
-from utils import get_local_ip_address, get_random_name
+from utils import get_local_ip_address, get_random_name, clean_empty_files
 import keyboard
 
 
@@ -130,7 +130,9 @@ class TypeWryter:
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
 
-        self.splash_screen()
+        clean_empty_files() # clean empty files in the TypeWrytes directory
+
+        self.splash_screen() #display startup splash screen
 
         self.keyboard.on_press(self.handle_key_down, suppress=False) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_press, suppress=True)
@@ -593,7 +595,7 @@ class TypeWryter:
 
         #powerdown - could add an autosleep if you want to save battery
         if e.name == "esc" and self.control_active: #ctrl+esc
-            #self.power_down()
+            self.power_down()
             pass
         if e.name == "r" and self.control_active: #ctrl+r
             self.epd.init()
@@ -603,7 +605,7 @@ class TypeWryter:
             self.display_qr_code()
             
         if e.name == "tab": 
-            #just using two spaces for tab, kind of cheating, whatever.
+            #just using two spaces for tab
             self.insert_character(" ")
             self.insert_character(" ")
             self.insert_character(" ")
