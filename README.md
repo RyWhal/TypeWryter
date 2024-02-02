@@ -8,12 +8,12 @@ This code is a heavily modified version of [zerowriter](https://github.com/zerow
 2. Update apt: `sudo apt update`
 3. Upgrade available packages: `sudo apt upgrade`
 4. Update apt-get packages: `sudo apt-get update`
-4.[Enable the SPI interface on your Raspberry Pi](https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_(B)_Manual#Enable_SPI_Interface)
+5.[Enable the SPI interface on your Raspberry Pi](https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_(B)_Manual#Enable_SPI_Interface)
    * `sudo raspi-config`
    * Choose Interfacing Options -> SPI -> Yes Enable SPI interface
    * `sudo reboot now`
    * Check `/boot/config.txt`, and you can see 'dtparam=spi=on' was written in.
-5. Install The following (E-Paper Dependencies):
+6. Install The following (E-Paper Dependencies):
 ```
 sudo apt-get install python3-pip
 sudo apt-get install python3-pil
@@ -22,11 +22,11 @@ sudo pip3 install RPi.GPIO
 sudo pip3 install spidev
 sudo apt install python3-gpiozero
 ```
-6. Install QRcode: `sudo pip3 install qrcode`
-7. Install Flask: `pip3 install Flask`
-8. Install Keyboard: `sudo pip3 install keyboard`
-9. Clone this repo. `git clone https://github.com/RyWhal/TypeWryter.git`
-10. Run it from the TypeWrytes directory with: `sudo python main.py`
+7. Install QRcode: `sudo pip3 install qrcode`
+8. Install Flask: `pip3 install Flask`
+9. Install Keyboard: `sudo pip3 install keyboard`
+10. Clone this repo. `git clone https://github.com/RyWhal/TypeWryter.git`
+11. Run it from the TypeWrytes directory with: `sudo python main.py`
 
 Optional:
 1. Install the Pi-Sugar tools, including battery monitor: `curl http://cdn.pisugar.com/release/pisugar-power-manager.sh | sudo bash`
