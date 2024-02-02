@@ -8,7 +8,7 @@ This code is a heavily modified version of [zerowriter](https://github.com/zerow
 2. Update apt: `sudo apt update`
 3. Upgrade available packages: `sudo apt upgrade`
 4. Update apt-get packages: `sudo apt-get update`
-5.[Enable the SPI interface on your Raspberry Pi](https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_(B)_Manual#Enable_SPI_Interface)
+5. [Enable the SPI interface on your Raspberry Pi](https://www.waveshare.com/wiki/4.2inch_e-Paper_Module_(B)_Manual#Enable_SPI_Interface)
    * `sudo raspi-config`
    * Choose Interfacing Options -> SPI -> Yes Enable SPI interface
    * `sudo reboot now`
