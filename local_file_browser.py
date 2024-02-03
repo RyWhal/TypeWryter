@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, render_template_string, request, redirect, url_for, session, render_template_string
+from flask import Flask, send_from_directory, render_template_string, request, redirect, url_for, session, render_template_string, render_template
 from threading import Thread
 import os
 import requests
@@ -14,6 +14,29 @@ app.secret_key = flask_pass  # Change to a random secret key
 
 typewrytes_dir = os.path.join(os.getcwd(), "TypeWrytes")
 server_thread = None
+
+ascii_art_lines = [
+    "+-----------------------------------+",
+    "| _____                             |",
+    "||_   _|   _ _ __   ___             |",
+    "|  | || | | | '_ \\ / _ \\            |",
+    "|  | || |_| | |_) |  __/            |",
+    "|  |_| \\__, | .__/ \\___|            |",
+    "|__    |___/|_|        _            |",
+    "|\\ \\      / / __ _   _| |_ ___ _ __ |",
+    "| \\ \\ /\\ / / '__| | | | __/ _ \\ '__||",
+    "|  \\ V  V /| |  | |_| | ||  __/ |   |",
+    "|   \\_/\\_/ |_|   \\__, |\\__\\___|_|   |",
+    "|                |___/              |",
+    "+-----------------------------------+",
+]
+
+@app.route('/')
+@require_password
+def index():
+    files = os.listdir(typewrytes_dir)
+    ascii_art = "\n".join(ascii_art_lines)  # Convert list to string
+    return render_template("index.html", files=files, ascii_art=ascii_art)
 
 def require_password(view_function):
     @wraps(view_function)
@@ -43,13 +66,20 @@ def login():
 @require_password
 def index():
     files = os.listdir(typewrytes_dir)
+    ascii_art = "\n".join(ascii_art_lines)  # Convert list to string
+    return render_template("index.html", files=files, ascii_art=ascii_art)
+
+'''@app.route('/')
+@require_password
+def index():
+    files = os.listdir(typewrytes_dir)
     return render_template_string("""
         <ul>
             {% for file in files %}
             <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
             {% endfor %}
         </ul>
-    """, files=files)
+    """, files=files)'''
 
 '''@app.route('/files/<filename>')
 @require_password
