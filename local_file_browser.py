@@ -31,13 +31,6 @@ ascii_art_lines = [
     "+-----------------------------------+",
 ]
 
-@app.route('/')
-@require_password
-def index():
-    files = os.listdir(typewrytes_dir)
-    ascii_art = "\n".join(ascii_art_lines)  # Convert list to string
-    return render_template("index.html", files=files, ascii_art=ascii_art)
-
 def require_password(view_function):
     @wraps(view_function)
     def decorated_function(*args, **kwargs):
@@ -68,23 +61,6 @@ def index():
     files = os.listdir(typewrytes_dir)
     ascii_art = "\n".join(ascii_art_lines)  # Convert list to string
     return render_template("index.html", files=files, ascii_art=ascii_art)
-
-'''@app.route('/')
-@require_password
-def index():
-    files = os.listdir(typewrytes_dir)
-    return render_template_string("""
-        <ul>
-            {% for file in files %}
-            <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
-            {% endfor %}
-        </ul>
-    """, files=files)'''
-
-'''@app.route('/files/<filename>')
-@require_password
-def download_file(filename):
-    return send_from_directory(typewrytes_dir, filename)'''
 
 @app.route('/rename', methods=['POST'])
 @require_password
