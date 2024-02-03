@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+</head>
+<body>
+    <pre>
+    +-----------------------------------+
+    | _____                             |
+    ||_   _|   _ _ __   ___             |
+    |  | || | | | '_ \ / _ \            |
+    |  | || |_| | |_) |  __/            |
+    |  |_| \__, | .__/ \___|            |
+    |__    |___/|_|        _            |
+    |\ \      / / __ _   _| |_ ___ _ __ |
+    | \ \ /\ / / '__| | | | __/ _ \ '__||
+    |  \ V  V /| |  | |_| | ||  __/ |   |
+    |   \_/\_/ |_|   \__, |\__\___|_|   |
+    |                |___/              |
+    +-----------------------------------+
+    </pre>
+    <h1>File Manager</h1>
+    <ul>
+        {% for file in files %}
+            <li>
+                {{ file }}
+                <!-- Delete Form -->
+                <form action="/delete" method="post" style="display: inline;">
+                    <input type="hidden" name="filename" value="{{ file }}">
+                    <button type="submit">Delete</button>
+                </form>
+                <!-- Rename Form -->
+                <form action="/rename" method="post" style="display: inline;">
+                    <input type="hidden" name="old_name" value="{{ file }}">
+                    <input type="text" name="new_name" placeholder="New name">
+                    <button type="submit">Rename</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -106,17 +106,16 @@ class TypeWryter:
         ]
         self.help_lines = [
         "                                     ",
-        "[CTRL+M]   - Show Menu with more functions",
-        "[CTRL+S]   - Save current tpying session",
-        "[CTRL+N]   - Start a new typing session",
+        "[CTRL+M]   - Show Menu",
+        "[CTRL+S]   - Save",
+        "[CTRL+N]   - New File",
         "[CTRL+R]   - Refresh the display",
         "[CTRL+W]   - Show current word count",
         "[CTRL+esc] - Reboot the device",
         "                                ",
         " ** Press any key to continue** "
         ]
-        #self.timestamp = time.strftime("%Y%m%d%H%M%S")  # Format: YYYYMMDDHHMMSS
-        #self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'typewryte_{self.timestamp}.txt')
+
         self.fname,self.short_name = get_random_name()
         self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{self.fname}.txt')
         
@@ -157,24 +156,24 @@ class TypeWryter:
         self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
         self.server_menu.addItem("Back", lambda: self.hide_child_menu())
 
+    #generate display buffer for display
     def partial_update_buffer(self):
-        #generate display buffer for display
         partial_buffer = self.epd.getbuffer(self.display_image)
         self.epd.display_Partial(partial_buffer)
 
+    # Update the display with the new image
     def full_update_buffer(self):
-        # Update the display with the new image
         partial_buffer = self.epd.getbuffer(self.display_image)
         self.epd.display(partial_buffer)
 
     def splash_screen(self):
-        # Starting Y position
-        y_position = 2 
+        y_position = 2 # Starting Y position
         # Add each line of the ASCII art to the image
         for line in self.ascii_art_lines:
             self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
             y_position += 13  # Adjust line spacing as needed
 
+        # Add each line of the help text
         for line in self.help_lines:
             self.display_draw.text((50, y_position), line, font=self.font13, fill=0)
             y_position += 13
@@ -566,28 +565,11 @@ class TypeWryter:
             self.menu_down()
             return
 
-          '''#move scrollindex down
-          self.scrollindex = self.scrollindex - 1
-          if self.scrollindex < 1:
-                self.scrollindex = 1
-          
-          self.console_message = (f'[{round(len(self.previous_lines)/self.lines_on_screen)-self.scrollindex+1}/{round(len(self.previous_lines)/self.lines_on_screen)}]')
-          self.update_display()
-          self.console_message = ""'''
-
         if e.name== "up" or e.name== "left":
           if (self.menu_mode):
             self.menu_up()
             return
 
-          '''#move scrollindex up
-          self.scrollindex = self.scrollindex + 1
-          if self.scrollindex > round(len(self.previous_lines)/self.lines_on_screen+1):
-                self.scrollindex = round(len(self.previous_lines)/self.lines_on_screen+1)
-          
-          self.console_message = (f'[{round(len(self.previous_lines)/self.lines_on_screen)-self.scrollindex+1}/{round(len(self.previous_lines)/self.lines_on_screen)}]')
-          self.update_display()
-          self.console_message = ""'''
         if e.name == 'esc':
             if (self.menu_mode):
                 self.hide_menu()
