@@ -81,7 +81,7 @@ def download_file(filename):
     except FileNotFoundError:
         return 'File not found', 404
 
-@app.route('/delete/<filename>')
+@app.route('/delete/<filename>', methods=['POST'])
 @require_password
 def delete_file(filename):
     try:

@@ -3,26 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>File Manager</title>
+    <script>
+        function renameFile(oldName) {
+            var newName = prompt("Please enter the new name for " + oldName, oldName);
+            if (newName && newName !== oldName) {
+                document.getElementById('old_name').value = oldName;
+                document.getElementById('new_name').value = newName;
+                document.getElementById('renameForm').submit();
+            }
+        }
+
+        function confirmDelete(filename) {
+            var confirmDelete = confirm("Are you sure you want to delete " + filename + "?");
+            if (confirmDelete) {
+                document.getElementById('delete_filename').value = filename;
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
 </head>
 <body>
     <pre>{{ ascii_art }}</pre>
-    <h1>File Manager</h1>
     <ul>
         {% for file in files %}
         <li>
             {{ file }}
-            <!-- Delete Form -->
-            <form action="{{ url_for('delete_file', filename=file) }}" method="post" style="display: inline;">
-                <button type="submit">Delete</button>
-            </form>
-            <!-- Rename Form -->
-            <form action="{{ url_for('rename_file') }}" method="post" style="display: inline;">
-                <input type="hidden" name="old_name" value="{{ file }}">
-                <input type="text" name="new_name" placeholder="New name">
-                <button type="submit">Rename</button>
-            </form>
+            <button onclick="location.href='/download/{{ file }}'">Download</button>
+            <button onclick="renameFile('{{ file }}')">Rename</button>
+            <button onclick="confirmDelete('{{ file }}')">Delete</button>
         </li>
         {% endfor %}
     </ul>
+    <!-- Hidden Forms for Rename and Delete -->
+    <form id="renameForm" action="/rename" method="post" style="display: none;">
+        <input type="hidden" id="old_name" name="old_name">
+        <input type="hidden" id="new_name" name="new_name">
+    </form>
+    <form id="deleteForm" action="/delete" method="post" style="display: none;">
+        <input type="hidden" id="delete_filename" name="filename">
+    </form>
 </body>
 </html>
