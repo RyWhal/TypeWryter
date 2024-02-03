@@ -86,8 +86,10 @@ def download_file(filename):
 def delete_file(filename):
     try:
         os.remove(os.path.join(typewrytes_dir, filename))
+        print(f"file: " + typewrytes_dir + filename )
         return 'File deleted successfully'
     except FileNotFoundError:
+        print(f"file not deleted: " + typewrytes_dir + filename )
         return 'File not found', 404
 
 def run_server():

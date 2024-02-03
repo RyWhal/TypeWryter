@@ -180,7 +180,7 @@ class TypeWryter:
 
         # Update the display with the new image
         self.full_update_buffer()
-        keyboard.read_key()
+        keyboard.read_key() # wait for any keyboard input before proceeding past the splash screen
 
     def show_load_menu(self):
         print("showing load menu")
