@@ -435,7 +435,7 @@ class TypeWryter:
         
         # Display messages
         self.display_draw.text((30, 90),message1, font=self.font13, fill=0)
-        self.display_draw.text((50, 70),message2, font=self.font16, fill=0)
+        self.display_draw.text((75, 105),message2, font=self.font16, fill=0)
 
         # Paste the QR code onto the display image
         self.display_image.paste(qr_img_converted, (qr_x, qr_y))
@@ -460,7 +460,7 @@ class TypeWryter:
         self.hide_child_menu()
 
 
-    '''    def update_display(self):
+    def update_display(self):
         self.display_updating = True
 
         # Clear the main display area -- also clears input line (270-300)
@@ -489,52 +489,7 @@ class TypeWryter:
 
         self.last_display_update = time.time()
         self.display_updating = False
-        self.needs_display_update = False'''
-    def update_display(self):
-        self.display_updating = True
-
-        # Clear the display area
-        self.display_draw.rectangle((0, 0, 400, 300), fill=255)
-
-        y_position = 280 - self.line_spacing  # Starting Y position for the bottom line
-        temp_content = self.input_content + "|"  # Add cursor representation for visual feedback
-
-        # Split the content into words
-        words = temp_content.split(' ')
-        line = ''
-        for word in words:
-            # Check if the current line, plus the next word, exceeds the line width
-            if len(line + word) <= self.chars_per_line:
-                line += word + ' '
-            else:
-                # If adding the next word exceeds the line width, draw the current line and start a new one
-                self.display_draw.text((0, y_position), line, font=self.font13, fill=0)
-                y_position -= self.line_spacing  # Move up for the next line
-                line = word + ' '  # Start the new line with the current word
-            
-            # Handle case where a single word is longer than the display width
-            if len(word) > self.chars_per_line:
-                # Draw the current line if it has content
-                if line.strip():
-                    self.display_draw.text((0, y_position), line, font=self.font13, fill=0)
-                    y_position -= self.line_spacing  # Move up for the next line
-                    line = ''  # Reset current line
-                
-                # Break the long word across multiple lines
-                while len(word) > 0:
-                    part = word[:self.chars_per_line]
-                    self.display_draw.text((0, y_position), part, font=self.font13, fill=0)
-                    y_position -= self.line_spacing
-                    word = word[self.chars_per_line:]
-                    
-                line = ' '  # Ensure space follows the long word broken across lines
-
-        # Draw any remaining text in 'line'
-        if line:
-            self.display_draw.text((0, y_position), line, font=self.font13, fill=0)
-
-        self.partial_update_buffer()
-        self.display_updating = False
+        self.needs_display_update = False
 
     def update_input_area(self):
         cursor_index = self.cursor_position
@@ -553,11 +508,8 @@ class TypeWryter:
 
     def insert_character(self, character):
         cursor_index = self.cursor_position
-        if character == '\n':  # Assuming '\n' represents the Enter key press
-            # Move current content to previous_lines and start a new line
-            self.previous_lines.append(self.input_content)
-            self.input_content = ""
-        elif cursor_index <= len(self.input_content):
+        
+        if cursor_index <= len(self.input_content):
             # Insert character in the text_content string
             self.input_content = self.input_content[:cursor_index] + character + self.input_content[cursor_index:]
             self.cursor_position += 1  # Move the cursor forward
@@ -676,11 +628,8 @@ class TypeWryter:
                 self.menu.select()
                 return
 
-            if self.scrollindex>1:
-                #if you were reviewing text, jump to scrollindex=1
-                self.scrollindex = 1
-                self.update_display()
             else:
+                self.insert_character("\n")
                 # Add the input to the previous_lines array
                 self.previous_lines.append(self.input_content)
                 self.input_content = "" #clears input content
