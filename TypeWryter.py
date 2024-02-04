@@ -481,7 +481,7 @@ class TypeWryter:
         #Display Console Message
         if self.console_message != "":
             self.display_draw.rectangle((180, 280, 400, 300), fill=255)
-            self.display_draw.text((180, 280), self.console_message, font=self.font13, fill=0)
+            self.display_draw.text((180, 200), self.console_message, font=self.font13, fill=0)
             self.console_message = ""
         
         #generate display buffer for display
@@ -550,7 +550,6 @@ class TypeWryter:
 
         if e.name == "w" and self.control_active: #ctrl+w
             wc = self.get_word_count(self.filename)
-            print(self.filename)
             print("Word Count: " + str(wc))
             self.console_message = "Word count: " + str(wc)
             self.update_display()
