@@ -473,7 +473,7 @@ class TypeWryter:
         # print(temp)# to debug if you change the font parameters (size, chars per line, etc)
 
         for line in reversed(temp[-self.lines_on_screen:]):
-          self.display_draw.text((2, y_position), line[:self.chars_per_line], font=self.font13, fill=0)
+          self.display_draw.text((0, y_position), line[:self.chars_per_line], font=self.font13, fill=0)
           y_position -= self.line_spacing
 
         #Display Console Message

@@ -90,7 +90,7 @@ def delete_file(filename):
         return 'File deleted successfully'
     except FileNotFoundError:
         print(f"file not deleted: " + typewrytes_dir + filename )
-        return 'File not found', 404
+        return f'File not found - ' + typewrytes_dir + filename, 404
 
 def run_server():
     try:
