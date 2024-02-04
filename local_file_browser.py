@@ -81,16 +81,16 @@ def download_file(filename):
     except FileNotFoundError:
         return 'File not found', 404
 
-@app.route('/delete/<filename>', methods=['POST'])
+@app.route('/delete', methods=['POST'])
 @require_password
-def delete_file(filename):
-    try:
-        os.remove(os.path.join(typewrytes_dir, filename))
-        print(f"file: " + typewrytes_dir + filename )
+def delete_file():
+    filename = request.form.get('filename')
+    file_path = os.path.join(typewrytes_dir, filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
         return 'File deleted successfully'
-    except FileNotFoundError:
-        print(f"file not deleted: " + typewrytes_dir + filename )
-        return f'File not found - ' + typewrytes_dir + filename, 404
+    else:
+        return 'File not found', 404
 
 def run_server():
     try:

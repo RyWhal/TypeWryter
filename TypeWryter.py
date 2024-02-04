@@ -88,6 +88,7 @@ class TypeWryter:
         self.menu = None
         self.parent_menu = None # used to store the menu that was open before the load menu was opened
         self.font13 = ImageFont.truetype('Courier Prime.ttf', 13)
+        self.font16 = ImageFont.truetype('Courier Prime.ttf', 16)
         self.typewrytes_dir = ""
         self.ascii_art_lines = [
         "+-----------------------------------+",
@@ -433,7 +434,7 @@ class TypeWryter:
         
         # Display messages
         self.display_draw.text((30, 90),message1, font=self.font13, fill=0)
-        self.display_draw.text((30, 105),message2, font=self.font13, fill=0)
+        self.display_draw.text((50, 70),message2, font=self.font16, fill=0)
 
         # Paste the QR code onto the display image
         self.display_image.paste(qr_img_converted, (qr_x, qr_y))
