@@ -491,7 +491,7 @@ class TypeWryter:
         #Display Console Message
         if self.console_message != "":
             self.display_draw.rectangle((180, 280, 400, 300), fill=255)
-            self.display_draw.text((180, 200), self.console_message, font=self.font13, fill=0)
+            self.display_draw.text((150, 280), self.console_message, font=self.font13, fill=0)
             self.console_message = ""
         
         #generate display buffer for display
@@ -545,6 +545,16 @@ class TypeWryter:
         if e.name == 'ctrl': #if shift is released
             self.control_active = True
 
+    def delete_previous_word(self):
+        # Split the current input content into words
+        words = self.input_content.split(' ')
+        if words:
+            words = words[:-1]  # Remove the last word
+        
+        self.input_content = ' '.join(words) # replace last word with a ' '
+        self.cursor_position = len(self.input_content)#update the cursor position
+        self.update_display()
+
     def handle_key_press(self, e):
         if e.name== "s" and self.control_active:
             if not (self.menu_mode):
@@ -589,17 +599,14 @@ class TypeWryter:
                 self.hide_menu()
                 return
 
-        #powerdown - could add an autosleep if you want to save battery
         if e.name == "esc" and self.control_active: #ctrl+esc
             self.power_down()
             pass
+
         if e.name == "r" and self.control_active: #ctrl+r
             self.epd.init()
             self.epd.Clear()
             self.update_display()
-        
-        #if e.name == "q" and self.control_active: #ctrl+r
-        #    self.display_qr_code()
             
         if e.name == "tab":
             if not (self.menu_mode): 
@@ -624,7 +631,12 @@ class TypeWryter:
                 print('backspace')
                 self.delete_character()
                 self.needs_input_update = True
-                
+
+        if e.name == "backspace" and self.control_active:
+            if not (self.menu_mode):
+                self.delete_previous_word()
+                self.needs_input_update = True
+
         elif e.name == "space": #space bar
             if not (self.menu_mode):
                 self.insert_character(" ")
