@@ -32,6 +32,11 @@ class Menu:
         self.display_image = display_image
         self.menu_items = []
         self.selected_item = 0
+        # Get the current directory of this file
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        # Construct the absolute path to the font
+        font_path = os.path.join(script_dir, 'Courier Prime.ttf')
+        self.font16 = ImageFont.truetype(font_path, 16)
         #self.font13 = ImageFont.truetype('Courier Prime.ttf', 16)
     
     def addItem(self, text, action):
