@@ -32,7 +32,7 @@ class Menu:
         self.display_image = display_image
         self.menu_items = []
         self.selected_item = 0
-        self.font13 = ImageFont.truetype('Courier Prime.ttf', 16)
+        #self.font13 = ImageFont.truetype('Courier Prime.ttf', 16)
     
     def addItem(self, text, action):
         self.menu_items.append({'text': text, 'action': action})
