@@ -94,8 +94,18 @@ class TypeWryter:
         self.typewrytes_dir = ""
 
         # Can add other font sizes and change them wherever text is rendered.
-        self.font13 = ImageFont.truetype('Courier Prime.ttf', 13)
-        self.font16 = ImageFont.truetype('Courier Prime.ttf', 16)
+
+        # Get the current directory of this file
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+
+        # Construct the absolute path to the font
+        font_path = os.path.join(script_dir, 'Courier Prime.ttf')
+
+        # Use the absolute path for the font
+        self.font13 = ImageFont.truetype(font_path, 13)
+        self.font16 = ImageFont.truetype(font_path, 16)
+        #self.font13 = ImageFont.truetype('Courier Prime.ttf', 13)
+        #self.font16 = ImageFont.truetype('Courier Prime.ttf', 16)
         
         self.ascii_art_lines = [
         "+-----------------------------------+",
@@ -408,9 +418,6 @@ class TypeWryter:
           self.console_message = f"[Error saving file]"
           print("Failed to save file:", e)
 
-
-            
-
     def start_file_server(self):
         # get local IP
         local_ip = get_local_ip_address()
@@ -544,13 +551,13 @@ class TypeWryter:
             self.shift_active = True
         if e.name == 'ctrl': #if shift is released
             self.control_active = True
-
+    
+    #the delete word function works, but seems unstable. Crashes if you do it too quickly
     def delete_previous_word(self):
         # Split the current input content into words
         words = self.input_content.split(' ')
         if words:
             words = words[:-1]  # Remove the last word
-        
         self.input_content = ' '.join(words) # replace last word with a ' '
         self.cursor_position = len(self.input_content)#update the cursor position
         self.update_display()
