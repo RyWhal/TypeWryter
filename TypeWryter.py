@@ -64,6 +64,15 @@ class Menu:
 
 class TypeWryter:
     def __init__(self):
+
+        #modifying thesde will mess up how text displays
+        self.chars_per_line = 50 
+        self.lines_on_screen = 15 
+        self.font_size = 13
+        self.line_spacing = 20
+        self.scrollindex = 1
+
+        #initializing vars
         self.epd = None
         self.display_image = None
         self.display_draw = None
@@ -74,11 +83,6 @@ class TypeWryter:
         self.previous_lines = []
         self.needs_display_update = True
         self.needs_input_update = True
-        self.chars_per_line = 50
-        self.lines_on_screen = 15
-        self.font_size = 13
-        self.line_spacing = 20
-        self.scrollindex = 1
         self.console_message = ""
         self.updating_input_area = False
         self.control_active = False
@@ -87,9 +91,12 @@ class TypeWryter:
         self.server_menu = None
         self.menu = None
         self.parent_menu = None # used to store the menu that was open before the load menu was opened
+        self.typewrytes_dir = ""
+
+        # Can add other font sizes and change them wherever text is rendered.
         self.font13 = ImageFont.truetype('Courier Prime.ttf', 13)
         self.font16 = ImageFont.truetype('Courier Prime.ttf', 16)
-        self.typewrytes_dir = ""
+        
         self.ascii_art_lines = [
         "+-----------------------------------+",
         "| _____                             |",
@@ -116,24 +123,27 @@ class TypeWryter:
         "                                ",
         " ** Press any key to continue** "
         ]
-
+        
+        #Get a random from utils and create the initial file
         self.fname,self.short_name = get_random_name()
         self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', f'{self.fname}.txt')
         
-        self.manual = self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'TypeWryter_Manual.txt')
-        self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'cache.txt')
+        self.manual = self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'TypeWryter_Manual.txt') # Manual file
+        self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'cache.txt') # cache file
     
     def initialize(self):
+        #init the display and create initial image
         self.epd.init()
         self.epd.Clear()
         self.display_image = Image.new('1', (self.epd.width, self.epd.height), 255)
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
 
-        clean_empty_files() # clean empty files in the TypeWrytes directory
+        clean_empty_files() #clean empty files in the TypeWrytes directory
 
         self.splash_screen() #display startup splash screen
 
+        # establish keyboard listeners
         self.keyboard.on_press(self.handle_key_down, suppress=False) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_press, suppress=True)
     
@@ -157,7 +167,7 @@ class TypeWryter:
         self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
         self.server_menu.addItem("Back", lambda: self.hide_child_menu())
 
-    #generate display buffer for display
+    #generate initial display buffer for display
     def partial_update_buffer(self):
         partial_buffer = self.epd.getbuffer(self.display_image)
         self.epd.display_Partial(partial_buffer)
@@ -242,32 +252,16 @@ class TypeWryter:
         if not os.path.exists(self.typewrytes_dir):
             os.makedirs(self.typewrytes_dir)
             return self.typewrytes_dir
-
-    def load_file_into_previous_lines(self):
-        #self.file_path = os.path.join(os.path.dirname(__file__), 'TypeWrytes', filename)
+    
+    def get_word_count(self, file_path):
         try:
-            with open(self.filename, 'r') as file:
-                lines = file.readlines()
-                self.previous_lines = [line.strip() for line in lines]
-                self.input_content = ""
-                self.cursor_position = 0
-                self.console_message = f"[Loaded {self.short_name}]"
-                self.update_display()
-                time.sleep(1)
-                self.console_message = ""
-                self.update_display()
-                print("loaded: " + self.filename)
-        except Exception as e:
-            self.console_message = f"[Error loading file]"
-            print(f"Failed to load file {self.filename}: {e}")
-            self.update_display()
-            time.sleep(1)
-            self.console_message = ""
-            self.update_display()
-        finally:
-
-            self.menu = self.parent_menu
-            self.hide_menu()
+            with open(file_path, 'r') as file: # open the current file
+                self.content = file.read() #read in contents
+                self.words = self.content.split() # split it into single words
+                return len(self.words) # return length.
+        except IOError as e:
+            self.console_message = f"[Error getting wordcount]"
+            print("Failed to WC:", e)
 
     # This is almost an exact copy of load_file_into_previous_lines() - I'll combine the functions at some point.
     def load_manual(self):
@@ -362,6 +356,31 @@ class TypeWryter:
         print("rebooting")
         subprocess.run(['sudo', 'reboot', '-f'])
 
+    def load_file_into_previous_lines(self):
+        #self.file_path = os.path.join(os.path.dirname(__file__), 'TypeWrytes', filename)
+        try:
+            with open(self.filename, 'r') as file:
+                lines = file.readlines()
+                self.previous_lines = [line.strip() for line in lines]
+                self.input_content = ""
+                self.cursor_position = 0
+                self.console_message = f"[Loaded {self.short_name}]"
+                self.update_display()
+                time.sleep(1)
+                self.console_message = ""
+                self.update_display()
+                print("loaded: " + self.filename)
+        except Exception as e:
+            self.console_message = f"[Error loading file]"
+            print(f"Failed to load file {self.filename}: {e}")
+            self.update_display()
+            time.sleep(1)
+            self.console_message = ""
+            self.update_display()
+        finally:
+            self.menu = self.parent_menu
+            self.hide_menu()
+
     def load_previous_lines(self):
         try:
             with open(self.cache_file_path, 'r') as file:
@@ -389,19 +408,10 @@ class TypeWryter:
           self.console_message = f"[Error saving file]"
           print("Failed to save file:", e)
 
-    def get_word_count(self, file_path):
-        try:
-            with open(file_path, 'r') as file: # open the current file
-                self.content = file.read() #read in contents
-                self.words = self.content.split() # split it into single words
-                return len(self.words) # return length.
-        except IOError as e:
-            self.console_message = f"[Error getting wordcount]"
-            print("Failed to WC:", e)
+
             
 
     def start_file_server(self):
-
         # get local IP
         local_ip = get_local_ip_address()
         url = f"http://{local_ip}:5000" # generate full url string
@@ -469,7 +479,7 @@ class TypeWryter:
         # Display the previous lines
         y_position = 280 - self.line_spacing  # leaves room for cursor input
 
-        #Make a temp array from previous_lines. And then reverse it and display as usual.
+        #Make a temp array from previous_lines. And then reverse it and display.
         current_line=max(0,len(self.previous_lines)-self.lines_on_screen*self.scrollindex)
         temp=self.previous_lines[current_line:current_line+self.lines_on_screen]
         # print(temp)# to debug if you change the font parameters (size, chars per line, etc)
@@ -537,29 +547,32 @@ class TypeWryter:
 
     def handle_key_press(self, e):
         if e.name== "s" and self.control_active:
-            self.save_previous_lines(self.filename, self.previous_lines)
-            
-            self.console_message = f"[Saved] - {self.short_name}"
-            self.update_display()
-            time.sleep(2)
-            self.console_message = ""
-            self.update_display()
+            if not (self.menu_mode):
+                self.save_previous_lines(self.filename, self.previous_lines)
+                
+                self.console_message = f"[Saved] - {self.short_name}"
+                self.update_display()
+                time.sleep(2)
+                self.console_message = ""
+                self.update_display()
         
         if e.name == "m" and self.control_active: #ctrl+m
             self.show_menu()
 
         if e.name == "w" and self.control_active: #ctrl+w
-            wc = self.get_word_count(self.filename)
-            print("Word Count: " + str(wc))
-            self.console_message = "Word count: " + str(wc)
-            self.update_display()
-            time.sleep(2)
-            self.console_message = ""
-            self.update_display()
+            if not (self.menu_mode):
+                wc = self.get_word_count(self.filename)
+                print("Word Count: " + str(wc))
+                self.console_message = "Word count: " + str(wc)
+                self.update_display()
+                time.sleep(2)
+                self.console_message = ""
+                self.update_display()
 
         #new file (clear) via ctrl + n
         if e.name== "n" and self.control_active: #ctrl+n
-            self.new_file()
+            if not (self.menu_mode):
+                self.new_file()
 
         if e.name== "down" or e.name== "right":
           if (self.menu_mode):
@@ -584,43 +597,47 @@ class TypeWryter:
             self.epd.init()
             self.epd.Clear()
             self.update_display()
-        if e.name == "q" and self.control_active: #ctrl+r
-            self.display_qr_code()
+        
+        #if e.name == "q" and self.control_active: #ctrl+r
+        #    self.display_qr_code()
             
-        if e.name == "tab": 
-            #just using two spaces for tab
-            self.insert_character(" ")
-            self.insert_character(" ")
-            self.insert_character(" ")
+        if e.name == "tab":
+            if not (self.menu_mode): 
+                #just using two spaces for tab
+                self.insert_character(" ")
+                self.insert_character(" ")
+                self.insert_character(" ")
             
-            # Check if adding the character exceeds the line length limit
-            if self.cursor_position > self.chars_per_line:
-                self.previous_lines.append(self.input_content)                
-                # Update input_content to contain the remaining characters
-                self.input_content = ""
-                self.needs_display_update = True #trigger a display refresh
-            # Update cursor_position to the length of the remaining input_content
-            self.cursor_position = len(self.input_content)
-            
-            self.needs_input_update = True
+                # Check if adding the character exceeds the line length limit
+                if self.cursor_position > self.chars_per_line:
+                    self.previous_lines.append(self.input_content)                
+                    # Update input_content to contain the remaining characters
+                    self.input_content = ""
+                    self.needs_display_update = True #trigger a display refresh
+                # Update cursor_position to the length of the remaining input_content
+                self.cursor_position = len(self.input_content)
+                
+                self.needs_input_update = True
             
         if e.name == "backspace":
-            print('backspace')
-            self.delete_character()
-            self.needs_input_update = True
+            if not (self.menu_mode):
+                print('backspace')
+                self.delete_character()
+                self.needs_input_update = True
                 
         elif e.name == "space": #space bar
-            self.insert_character(" ")
+            if not (self.menu_mode):
+                self.insert_character(" ")
             
-            # Check if adding the character exceeds the line length limit
-            if self.cursor_position > self.chars_per_line:
-                self.previous_lines.append(self.input_content)                
-                self.input_content = ""
-                self.needs_display_update = True
-            # Update cursor_position to the length of the remaining input_content
-            self.cursor_position = len(self.input_content)
+                # Check if adding the character exceeds the line length limit
+                if self.cursor_position > self.chars_per_line:
+                    self.previous_lines.append(self.input_content)                
+                    self.input_content = ""
+                    self.needs_display_update = True
+                # Update cursor_position to the length of the remaining input_content
+                self.cursor_position = len(self.input_content)
             
-            self.needs_input_update = True
+                self.needs_input_update = True
         
         elif e.name == "enter":
             if (self.menu_mode):
@@ -628,7 +645,7 @@ class TypeWryter:
                 return
 
             else:
-                self.insert_character("\n")
+                self.insert_character("\n") #a newline is only inserted when the user hits enter. 
                 # Add the input to the previous_lines array
                 self.previous_lines.append(self.input_content)
                 self.input_content = "" #clears input content
