@@ -186,6 +186,8 @@ class TypeWryter:
 
     def config_logging(self):
         log_file_path = self.log_path
+        if not os.path.exists(log_file_path):
+            os.makedirs(log_file_path)
         logging.basicConfig(
             level=logging.DEBUG,
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
