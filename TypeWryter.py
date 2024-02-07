@@ -131,7 +131,7 @@ class TypeWryter:
         "+-----------------------------------+",
         ]
         self.help_lines = [
-        "                                     ",
+        "  TEST                                   ",
         "[CTRL+M]   - Show Menu",
         "[CTRL+S]   - Save File",
         "[CTRL+N]   - New File",
