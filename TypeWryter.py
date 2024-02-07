@@ -329,7 +329,7 @@ class TypeWryter:
         self.console_message = f"[Updating]"
         self.update_display()
 
-        completed_process = subprocess.run(['git', 'pull'], cwd = self.typewrytes_dir)
+        completed_process = subprocess.run(['sudo', 'git', 'pull'], cwd = self.typewrytes_dir)
         logging.info(f'Running git update:' + str(completed_process))
         if completed_process.returncode != 0:
             logging.exception(f"error updating with git")
