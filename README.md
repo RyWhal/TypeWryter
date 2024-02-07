@@ -59,11 +59,11 @@ WantedBy=multi-user.target
 
 After you create the service you run:
 
-`sudo systemctl daemon-reload` --> reload the systemctl daemon to include your new service
-`sudo systemctl enable typewryter.service` --> the command that actually enables the service on boot
-`sudo systemctl start typewryter.service` --> start TypeWryter
-`sudo systemctl restart typewryter.service` --> restart TypeWryter
-`sudo systemctl status typewryter.service` --> Check service status
+* `sudo systemctl daemon-reload` --> to reload the systemctl daemon to include your new service
+* `sudo systemctl enable typewryter.service` --> to enable the service on boot
+* `sudo systemctl start typewryter.service` --> to start TypeWryter
+* `sudo systemctl restart typewryter.service` --> to restart TypeWryter
+* `sudo systemctl status typewryter.service` --> to check service status
 
 ## Known Issues and limitations
 
@@ -85,7 +85,7 @@ TypeWryter will present you with a url, QR code, and  4 digit password. You can 
 1. Raspberry Pi Zero 2W -  https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/
 2. 4 inch E-ink display -  https://www.amazon.com/gp/product/B074NR1SW2
 3. External battery - https://www.amazon.com/gp/product/B08D678XPR
-4. Case - undecided
+4. Case - modeled in Fusion 360 and 3D printed. I'll share the STL files once they're finalized.
 
 
 
