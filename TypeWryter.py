@@ -23,6 +23,8 @@ import subprocess
 from local_file_browser import start_server, stop_server
 from utils import get_local_ip_address, get_random_name, clean_empty_files
 import keyboard
+import logging
+from logging.handlers import RotatingFileHandler
 
 
 class Menu:
@@ -103,15 +105,15 @@ class TypeWryter:
 
         # Get the current directory of this file
         script_dir = os.path.dirname(os.path.realpath(__file__))
-
         # Construct the absolute path to the font
         font_path = os.path.join(script_dir, 'Courier Prime.ttf')
-
         # Use the absolute path for the font
         self.font13 = ImageFont.truetype(font_path, 13)
         self.font16 = ImageFont.truetype(font_path, 16)
-        #self.font13 = ImageFont.truetype('Courier Prime.ttf', 13)
-        #self.font16 = ImageFont.truetype('Courier Prime.ttf', 16)
+
+        #log path
+        self.log_path = '/var/log/TypeWryter/application.log'
+
         
         self.ascii_art_lines = [
         "+-----------------------------------+",
@@ -182,6 +184,17 @@ class TypeWryter:
         self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
         self.server_menu.addItem("Close Menu", lambda: self.hide_child_menu())
 
+    def config_logging(self):
+        log_file_path = self.log_path
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            handlers=[
+                RotatingFileHandler(log_file_path, maxBytes=5*1024*1024, backupCount=5),
+                logging.StreamHandler()
+            ]
+        )
+
     #generate initial display buffer for display
     def partial_update_buffer(self):
         partial_buffer = self.epd.getbuffer(self.display_image)
@@ -239,7 +252,8 @@ class TypeWryter:
             for self.loaded_file in files:
                 self.load_menu.addItem(self.loaded_file, lambda f=self.loaded_file: self.load_file_into_previous_lines())
         except Exception as e:
-            print(f"Failed to list files in {data_folder_path}: {e}")
+            logging.exception(f"Failed to list files in {data_folder_path}: {e}")
+            
 
     def hide_menu(self):
         print("hiding menu")
@@ -278,7 +292,8 @@ class TypeWryter:
                 return len(self.words) # return length.
         except IOError as e:
             self.console_message = f"[Error getting wordcount]"
-            print("Failed to WC:", e)
+            logging.exception(f"Failed to WC:" + e)
+            
 
     def new_file(self):
         #save the cache first
@@ -313,9 +328,9 @@ class TypeWryter:
         self.update_display()
 
         completed_process = subprocess.run(['git', 'pull'], cwd = self.typewrytes_dir)
+        logging.info(f'Running git update:' + str(completed_process))
         if completed_process.returncode != 0:
-            print(completed_process.stdout)
-            print(completed_process.stderr)
+            logging.exception(f"error updating with git")
             self.console_message = f"[Error updating]"
             self.update_display()
             time.sleep(1)
@@ -349,7 +364,7 @@ class TypeWryter:
                 print("loaded: " + self.loaded_file)
         except Exception as e:
             self.console_message = f"[Error loading file]"
-            print(f"Failed to load file {self.filename}: {e}")
+            logging.exception(f"exception loading:" + self.filename + " : " + e)
             self.update_display()
             time.sleep(1)
             self.console_message = ""
