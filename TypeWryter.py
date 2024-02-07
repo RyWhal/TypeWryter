@@ -97,6 +97,7 @@ class TypeWryter:
         self.menu = None
         self.parent_menu = None # used to store the menu that was open before the load menu was opened
         self.typewrytes_dir = ""
+        self.loaded_file = ""
 
         # Can add other font sizes and change them wherever text is rendered.
 
@@ -231,7 +232,7 @@ class TypeWryter:
             files.sort(key=lambda x: os.path.getmtime(os.path.join(data_folder_path, x)), reverse=True)
 
             self.load_menu.addItem("Back", self.hide_child_menu)
-            self.loaded_file = ""
+            
             # Add each file to the load menu
             '''for filename in files:
                 self.load_menu.addItem(filename, lambda f=filename: self.load_file_into_previous_lines())'''
@@ -348,7 +349,7 @@ class TypeWryter:
                 print("loaded: " + self.loaded_file)
         except Exception as e:
             self.console_message = f"[Error loading file]"
-            print(f"Failed to load file {self.loaded_file}: {e}")
+            print(f"Failed to load file {self.filename}: {e}")
             self.update_display()
             time.sleep(1)
             self.console_message = ""
