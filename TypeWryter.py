@@ -130,13 +130,13 @@ class TypeWryter:
         self.help_lines = [
         "                                     ",
         "[CTRL+M]   - Show Menu",
-        "[CTRL+S]   - Save",
+        "[CTRL+S]   - Save File",
         "[CTRL+N]   - New File",
         "[CTRL+R]   - Refresh the display",
         "[CTRL+W]   - Show current word count",
         "[CTRL+esc] - Reboot the device",
         "                                ",
-        " ** Press any key to continue** "
+        " ** Press any key to continue ** "
         ]
         
         #Get a random from utils and create the initial file
@@ -164,13 +164,12 @@ class TypeWryter:
     
         # Populate the main menu items
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
-        self.menu.addItem("New", lambda: self.new_file())
-        self.menu.addItem("Load", lambda: self.show_load_menu())
+        self.menu.addItem("New File", lambda: self.new_file())
+        self.menu.addItem("Load Recent Files", lambda: self.show_load_menu())
         self.menu.addItem("Network File browser", lambda: self.show_server_menu())
-        self.menu.addItem("Help", lambda: self.load_manual())
         self.menu.addItem("Update TypeWryter", self.update_TypeWryter)
         self.menu.addItem("Power Off", self.power_down)
-        self.menu.addItem("Back", self.hide_menu)
+        self.menu.addItem("Close Menu", self.hide_menu)
 
         # populate the 'load' menu
         self.load_menu = Menu(self.display_draw, self.epd, self.display_image)
@@ -180,7 +179,7 @@ class TypeWryter:
         self.server_menu = Menu(self.display_draw, self.epd, self.display_image)
         self.server_menu.addItem("Start Server", lambda: self.start_file_server())
         self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
-        self.server_menu.addItem("Back", lambda: self.hide_child_menu())
+        self.server_menu.addItem("Close Menu", lambda: self.hide_child_menu())
 
     #generate initial display buffer for display
     def partial_update_buffer(self):
@@ -232,10 +231,12 @@ class TypeWryter:
             files.sort(key=lambda x: os.path.getmtime(os.path.join(data_folder_path, x)), reverse=True)
 
             self.load_menu.addItem("Back", self.hide_child_menu)
-
+            self.loaded_file = ""
             # Add each file to the load menu
-            for filename in files:
-                self.load_menu.addItem(filename, lambda f=filename: self.load_file_into_previous_lines())
+            '''for filename in files:
+                self.load_menu.addItem(filename, lambda f=filename: self.load_file_into_previous_lines())'''
+            for self.loaded_file in files:
+                self.load_menu.addItem(self.loaded_file, lambda f=self.loaded_file: self.load_file_into_previous_lines())
         except Exception as e:
             print(f"Failed to list files in {data_folder_path}: {e}")
 
@@ -278,46 +279,6 @@ class TypeWryter:
             self.console_message = f"[Error getting wordcount]"
             print("Failed to WC:", e)
 
-    # This is almost an exact copy of load_file_into_previous_lines() - I'll combine the functions at some point.
-    def load_manual(self):
-        try:
-            with open(self.manual, 'r') as file:
-                lines = file.readlines()
-                self.previous_lines = [line.strip() for line in lines]
-
-                # Clear the main display area -- also clears input line (270-300)
-                self.display_draw.rectangle((0, 0, 400, 300), fill=255)
-                
-                # Display the previous lines
-                y_position = 280 - self.line_spacing  # leaves room for cursor input
-
-                #Make a temp array from previous_lines. And then reverse it and display as usual.
-                current_line=max(0,len(self.previous_lines)-self.lines_on_screen*self.scrollindex)
-                temp=self.previous_lines[current_line:current_line+self.lines_on_screen]
-
-                for line in reversed(temp[-self.lines_on_screen:]):
-                    self.display_draw.text((10, y_position), line[:self.chars_per_line], font=self.font13, fill=0)
-                    y_position -= self.line_spacing
-                
-                #generate display buffer for display
-                self.partial_update_buffer()
-
-                self.last_display_update = time.time()
-                self.display_updating = False
-                self.needs_display_update = False
-
-        except Exception as e:
-            self.console_message = f"[Error loading file]"
-            print(f"Failed to load file {self.manual}: {e}")
-            self.update_display()
-            time.sleep(1)
-            self.console_message = ""
-            self.update_display()
-        finally:
-
-            self.menu = self.parent_menu
-            self.hide_menu()
-
     def new_file(self):
         #save the cache first
         self.fname,self.short_name = get_random_name()
@@ -350,7 +311,7 @@ class TypeWryter:
         self.console_message = f"[Updating]"
         self.update_display()
 
-        completed_process = subprocess.run(['git', 'pull', '-C', self.typewrytes_dir])
+        completed_process = subprocess.run(['git', 'pull'], cwd = self.typewrytes_dir)
         if completed_process.returncode != 0:
             print(completed_process.stdout)
             print(completed_process.stderr)
