@@ -695,7 +695,7 @@ class TypeWryter:
         self.needs_input_update = True
 
     def handle_interrupt(self):
-      #self.keyboard.unhook_all()
+      self.keyboard.unhook_all()
       self.epd.init()
       self.epd.Clear()
       exit(0)

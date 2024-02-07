@@ -9,7 +9,7 @@ from TypeWryter import TypeWryter
 type_wryter = TypeWryter()
 
 try:
-  type_wryter.epd = epd4in2_V2.EPD()
+  type_wryter.epd = epd4in2_V2.EPD() 
   type_wryter.keyboard = keyboard
   type_wryter.ensure_sub_dirs()
   type_wryter.initialize()
@@ -19,7 +19,7 @@ except KeyboardInterrupt:
     pass
 
 finally:
-    #keyboard.unhook_all()
+    keyboard.unhook_all()
     type_wryter.epd.init()
     time.sleep(1)
     type_wryter.epd.Clear()
