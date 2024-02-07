@@ -8,11 +8,11 @@ from functools import wraps
 
 # initialize Flask
 app = Flask(__name__)
-app.debug = False # Change to 'True' if you need more information
+app.debug = True # Change to 'True' if you need more information
 flask_pass = "{:04d}".format(random.randint(0, 9999)) #generate 4 digit random password
 app.secret_key = flask_pass  # Change to a random secret key
 
-typewrytes_dir = os.path.join(os.getcwd(), "TypeWrytes")
+typewrytes_dir = os.path.join(os.path.dirname(__file__), 'TypeWrytes')
 server_thread = None
 
 ascii_art_lines = [
