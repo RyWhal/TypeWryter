@@ -354,6 +354,7 @@ class TypeWryter:
         #self.file_path = os.path.join(os.path.dirname(__file__), 'TypeWrytes', filename)
         try:
             with open(self.loaded_file, 'r') as file:
+                file = os.path.join(os.path.dirname(__file__), 'TypeWrytes', file)
                 lines = file.readlines()
                 self.previous_lines = [line.strip() for line in lines]
                 self.input_content = ""
