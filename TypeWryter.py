@@ -254,7 +254,7 @@ class TypeWryter:
             for self.loaded_file in files:
                 self.load_menu.addItem(self.loaded_file, lambda f=self.loaded_file: self.load_file_into_previous_lines())
         except Exception as e:
-            logging.exception(f"Failed to list files in {data_folder_path}: {e}")
+            logging.exception(f"Failed to list files in {data_folder_path}: {str(e)}")
             
 
     def hide_menu(self):
@@ -294,7 +294,7 @@ class TypeWryter:
                 return len(self.words) # return length.
         except IOError as e:
             self.console_message = f"[Error getting wordcount]"
-            logging.exception(f"Failed to WC:" + e)
+            logging.exception(f"Failed to WC:" + str(e))
             
 
     def new_file(self):
@@ -366,7 +366,7 @@ class TypeWryter:
                 print("loaded: " + self.loaded_file)
         except Exception as e:
             self.console_message = f"[Error loading file]"
-            logging.exception(f"exception loading:" + self.filename + " : " + e)
+            logging.exception(f"exception loading:" + self.filename + " : " + str(e))
             self.update_display()
             time.sleep(1)
             self.console_message = ""
