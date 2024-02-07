@@ -35,6 +35,35 @@ Optional:
 I used Raspberry Pi OS (64-bit) Lite.
 You can use whatever you want, but you may have to tweak minor things. 
 
+# Start on boot
+You can use whatever method you want to make the application on boot (crontab, rc.local, etc.). I chose to set the application up as a systemd service.
+
+/etc/systemd/system/typewryter.service:
+```
+[Unit]
+Description=TypeWryter free write service
+After=multi-user.target
+
+[Service]
+Type=idle
+WorkingDirectory=/home/logmein/TypeWryter
+ExecStart=/usr/bin/python3 /home/logmein/TypeWryter/main.py
+RuntimeDirectory=TypeWryter
+ProtectSystem=full
+StandardOutput=append:/var/log/TypeWryter/systemd_output.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
+```
+
+After you create the service you run:
+
+`sudo systemctl daemon-reload` --> reload the systemctl daemon to include your new service
+`sudo systemctl enable typewryter.service` --> the command that actually enables the service on boot
+`sudo systemctl start typewryter.service` --> start TypeWryter
+`sudo systemctl restart typewryter.service` --> restart TypeWryter
+`sudo systemctl status typewryter.service` --> Check service status
 
 ## Known Issues and limitations
 
