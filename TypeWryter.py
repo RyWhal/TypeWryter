@@ -350,7 +350,7 @@ class TypeWryter:
         self.console_message = f"[Updating]"
         self.update_display()
 
-        completed_process = subprocess.run(['git', 'pull', '-C', str(os.path.dirname(__file__))])
+        completed_process = subprocess.run(['git', 'pull', '-C', self.typewrytes_dir])
         if completed_process.returncode != 0:
             print(completed_process.stdout)
             print(completed_process.stderr)
