@@ -168,7 +168,7 @@ class TypeWryter:
         # Populate the main menu items
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
         self.menu.addItem("New File", lambda: self.new_file())
-        self.menu.addItem("Load Recent Files", lambda: self.show_load_menu())
+        #self.menu.addItem("Load Recent Files", lambda: self.show_load_menu())
         self.menu.addItem("Network File browser", lambda: self.show_server_menu())
         self.menu.addItem("Update TypeWryter", self.update_TypeWryter)
         self.menu.addItem("Power Off", self.power_down)
@@ -695,7 +695,7 @@ class TypeWryter:
         self.needs_input_update = True
 
     def handle_interrupt(self):
-      self.keyboard.unhook_all()
+      #self.keyboard.unhook_all()
       self.epd.init()
       self.epd.Clear()
       exit(0)
