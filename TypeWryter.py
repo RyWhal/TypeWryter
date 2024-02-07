@@ -352,9 +352,10 @@ class TypeWryter:
 
     def load_file_into_previous_lines(self):
         #self.file_path = os.path.join(os.path.dirname(__file__), 'TypeWrytes', filename)'
-        self.loaded_file = os.path.join(os.path.dirname(__file__), 'TypeWrytes', self.loaded_file)
+        self.filename = os.path.join(os.path.dirname(__file__), 'TypeWrytes', self.loaded_file)
+        self.short_name = self.loaded_file
         try:
-            with open(self.loaded_file, 'r') as file:
+            with open(self.filename, 'r') as file:
                 lines = file.readlines()
                 self.previous_lines = [line.strip() for line in lines]
                 self.input_content = ""
