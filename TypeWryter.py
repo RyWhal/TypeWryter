@@ -335,20 +335,20 @@ class TypeWryter:
     def load_file_into_previous_lines(self):
         #self.file_path = os.path.join(os.path.dirname(__file__), 'TypeWrytes', filename)
         try:
-            with open(self.filename, 'r') as file:
+            with open(self.loaded_file, 'r') as file:
                 lines = file.readlines()
                 self.previous_lines = [line.strip() for line in lines]
                 self.input_content = ""
                 self.cursor_position = 0
-                self.console_message = f"[Loaded {self.short_name}]"
+                self.console_message = f"[Loaded {self.loaded_file}]"
                 self.update_display()
                 time.sleep(1)
                 self.console_message = ""
                 self.update_display()
-                print("loaded: " + self.filename)
+                print("loaded: " + self.loaded_file)
         except Exception as e:
             self.console_message = f"[Error loading file]"
-            print(f"Failed to load file {self.filename}: {e}")
+            print(f"Failed to load file {self.loaded_file}: {e}")
             self.update_display()
             time.sleep(1)
             self.console_message = ""
