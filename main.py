@@ -19,7 +19,7 @@ except KeyboardInterrupt:
     pass
 
 finally:
-    keyboard.unhook_all()
+    #keyboard.unhook_all()
     type_wryter.epd.init()
     time.sleep(1)
     type_wryter.epd.Clear()
