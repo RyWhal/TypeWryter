@@ -58,6 +58,17 @@ class Menu:
 
     def select(self):
         self.menu_items[self.selected_item]['action']()
+    
+    def request_network_pw(self):
+        self.ending_content=""
+        self.getInput("PW", self.input_content)
+        return
+    
+    def getInput(self, prompt, callback):
+        self.inputMode = True
+        self.input_content = ""
+        self.cursor_position = 0
+        self.inputlabel = prompt
 
     def display(self):
         self.display_draw.rectangle((0, 0, 400, 300), fill=255)
@@ -183,6 +194,73 @@ class TypeWryter:
         self.server_menu.addItem("Start Server", lambda: self.start_file_server())
         self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
         self.server_menu.addItem("Close Menu", lambda: self.hide_child_menu())
+
+        self.networks_menu = Menu(self.display_draw, self.epd, self.display_image)
+        self.populate_networks_menu()
+
+    def request_network_pw(self):
+        self.ending_content=""
+        self.getInput("PW", self.input_content)
+        return
+
+    def get_ssid(self):
+        raw_wifi = subprocess.check_output(['iwgetid', '-r'])
+        data_strings = raw_wifi.decode('utf-8').split()
+        return data_strings
+
+    def populate_networks_menu(self):
+        self.networks_menu.menu_items.clear()
+        try:
+            available_networks = self.get_available_wifi_networks()
+            self.networks_menu.addItem("<- Back", self.hide_child_menu, None)
+            self.networks_menu.addItem("Manually Enter SSID", lambda: self.menu.getInput("SSID", self.input_content), lambda: self.update_manual_ssid(self.menu.input_content))
+            if self.manual_network!="":
+                self.networks_menu.addItem(self.manual_network, lambda: self.menu.request_network_pw(), lambda: self.connect_to_network(self.manual_network,(self.menu.input_content)))
+            for network in available_networks:
+                if network != "--":
+                    self.networks_menu.addItem(network, lambda n=network: self.menu.request_network_pw(), lambda n=network: self.connect_to_network(n,(self.menu.input_content)))
+        except Exception as e:
+            self.networks_menu.addItem(f"Failed: {e}", self.hide_child_menu, None)
+            print(f"Failed: {e}")
+
+    def connect_to_network(self, network, password):
+        self.connect_to_wifi(network, password)
+        return
+
+    def connect_to_wifi(self, ssid, password):
+        try:
+            process = subprocess.Popen(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', password], 
+                                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # Wait for the command to finish, with a timeout of 5 seconds
+            stdout, stderr = process.communicate(timeout=5)
+            # Check if the command was successful
+            if process.returncode == 0:
+                print(f"Connected to WiFi: {ssid}")
+                self.menu.consolemsg(f"Connected to: {ssid}")
+                return True
+            else:
+                print(f"Error connecting to WiFi: {stderr.decode()}")
+                self.menu.consolemsg(f"Error: {stderr.decode()}")
+                return False
+        except subprocess.TimeoutExpired:
+            print("Timeout error.")
+            self.menu.consolemsg("Error: Connection Timeout.")
+            return False
+        
+    def update_manual_ssid(self, networkname):
+        self.manual_network=networkname
+        self.populate_networks_menu()
+        print("new network "+ networkname)
+
+    def get_available_wifi_networks(self):
+        try:
+            result = subprocess.run(['nmcli', '-f', 'SSID', 'dev', 'wifi', 'list'], capture_output=True, text=True)
+            output = result.stdout.strip()
+            networks = [line.split()[0] for line in output.split('\n')[1:] if line.strip()]
+            return networks
+        except Exception as e:
+            print(f"Error getting available WiFi networks: {e}")
+            return []
 
     def config_logging(self):
         log_file_path = self.log_path
