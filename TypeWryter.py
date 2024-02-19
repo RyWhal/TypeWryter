@@ -183,6 +183,7 @@ class TypeWryter:
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
         self.menu.addItem("New File", lambda: self.new_file(), None)
         #self.menu.addItem("Load Recent Files", lambda: self.show_load_menu())
+        self.menu.addItem("Wifi: " + str(self.get_ssid()), lambda: self.show_networks_menu(), None)
         self.menu.addItem("Network File browser", lambda: self.show_server_menu(), None)
         self.menu.addItem("Update TypeWryter", self.update_TypeWryter, None)
         self.menu.addItem("Power Off", self.power_down, None)
@@ -210,6 +211,12 @@ class TypeWryter:
         raw_wifi = subprocess.check_output(['iwgetid', '-r'])
         data_strings = raw_wifi.decode('utf-8').split()
         return data_strings
+    
+    def show_networks_menu(self):
+        self.parent_menu = self.menu
+        self.populate_networks_menu()
+        self.menu = self.networks_menu
+        self.menu.display()
 
     def populate_networks_menu(self):
         self.networks_menu.menu_items.clear()
