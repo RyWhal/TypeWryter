@@ -41,8 +41,11 @@ class Menu:
         self.font13 = ImageFont.truetype(font_path, 15)
         #self.font13 = ImageFont.truetype('Courier Prime.ttf', 16)
     
-    def addItem(self, text, action):
-        self.menu_items.append({'text': text, 'action': action})
+    '''def addItem(self, text, action):
+        self.menu_items.append({'text': text, 'action': action})'''
+    
+    def addItem(self, text, action, callback):
+        self.menu_items.append({'text': text, 'action': action, 'callback': callback})
 
     def up(self):
         self.selected_item -= 1
@@ -178,12 +181,12 @@ class TypeWryter:
     
         # Populate the main menu items
         self.menu = Menu(self.display_draw, self.epd, self.display_image)
-        self.menu.addItem("New File", lambda: self.new_file())
+        self.menu.addItem("New File", lambda: self.new_file(), None)
         #self.menu.addItem("Load Recent Files", lambda: self.show_load_menu())
-        self.menu.addItem("Network File browser", lambda: self.show_server_menu())
-        self.menu.addItem("Update TypeWryter", self.update_TypeWryter)
-        self.menu.addItem("Power Off", self.power_down)
-        self.menu.addItem("Close Menu", self.hide_menu)
+        self.menu.addItem("Network File browser", lambda: self.show_server_menu(), None)
+        self.menu.addItem("Update TypeWryter", self.update_TypeWryter, None)
+        self.menu.addItem("Power Off", self.power_down, None)
+        self.menu.addItem("Close Menu", self.hide_menu, None)
 
         # populate the 'load' menu
         self.load_menu = Menu(self.display_draw, self.epd, self.display_image)
@@ -191,9 +194,9 @@ class TypeWryter:
 
         # Populate the network browser menu
         self.server_menu = Menu(self.display_draw, self.epd, self.display_image)
-        self.server_menu.addItem("Start Server", lambda: self.start_file_server())
-        self.server_menu.addItem("Stop Server", lambda: self.stop_file_server())
-        self.server_menu.addItem("Close Menu", lambda: self.hide_child_menu())
+        self.server_menu.addItem("Start Server", lambda: self.start_file_server(), None)
+        self.server_menu.addItem("Stop Server", lambda: self.stop_file_server(), None)
+        self.server_menu.addItem("Close Menu", lambda: self.hide_child_menu(), None)
 
         self.networks_menu = Menu(self.display_draw, self.epd, self.display_image)
         self.populate_networks_menu()
@@ -324,13 +327,13 @@ class TypeWryter:
             # Sort files by modification time
             files.sort(key=lambda x: os.path.getmtime(os.path.join(data_folder_path, x)), reverse=True)
 
-            self.load_menu.addItem("Back", self.hide_child_menu)
+            self.load_menu.addItem("Back", self.hide_child_menu, None)
             
             # Add each file to the load menu
             '''for filename in files:
                 self.load_menu.addItem(filename, lambda f=filename: self.load_file_into_previous_lines())'''
             for self.loaded_file in files:
-                self.load_menu.addItem(self.loaded_file, lambda f=self.loaded_file: self.load_file_into_previous_lines())
+                self.load_menu.addItem(self.loaded_file, lambda f=self.loaded_file: self.load_file_into_previous_lines(), None)
         except Exception as e:
             logging.exception(f"Failed to list files in {data_folder_path}: {str(e)}")
             
