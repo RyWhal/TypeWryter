@@ -581,6 +581,7 @@ class TypeWryter:
         self.last_display_update = time.time()
         self.display_updating = False
         self.needs_display_update = False
+        
 
     def update_input_area(self):
         cursor_index = self.cursor_position
